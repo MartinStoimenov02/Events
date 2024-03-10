@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const PlaceSeatsScheme = new mongoose.Schema({
     eventId: {
         type: mongoose.Types.ObjectId,
-        ref: "Events ",
+        ref: "Events",
         required:[true, "eventId is required."]
     },
     placeId: {
         type: mongoose.Types.ObjectId,
-        ref: "Places ",
+        ref: "Places",
         required:[true, "placeId is required."]
     },
     row: {
@@ -32,4 +32,4 @@ const PlaceSeatsScheme = new mongoose.Schema({
 
 const PlaceSeatsModel = mongoose.model("placeSeats", PlaceSeatsScheme);
 
-module.exports = PlaceSeatsModel;
+export default PlaceSeatsModel;

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const TicketStatusesScheme = new mongoose.Schema({
     statusName: {
@@ -10,4 +10,4 @@ const TicketStatusesScheme = new mongoose.Schema({
 
 const TicketStatusesModel = mongoose.model("ticketStatuses", TicketStatusesScheme);
 
-module.exports = TicketStatusesModel;
+export default TicketStatusesModel;

@@ -1,47 +1,39 @@
-const express = require('express');
-const app = express();
-const mongoose = require('mongoose');
-const UserModel = require('./models/Users');
-const RoleModel = require('./models/Roles');
-const EventModel = require('./models/Events');
-const EventTypeModel = require('./models/EventTypes');
-const PlacesModel = require('./models/Places');
-const FavouriteEventsModel = require('./models/FavouriteEvents');
-const TicketsModel = require('./models/Tickets');
-const PlaceSeatsModel = require('./models/PlaceSeats');
-const TicketStatusesModel = require('./models/TicketStatuses');
-const cors = require('cors');
+import roleRoutes from './routes/role.route.js';
+import express from 'express';
+import mongoose from 'mongoose';
+import UserModel from './models/Users.js';
+import EventModel from './models/Events.js';
+import EventTypeModel from './models/EventTypes.js';
+import PlacesModel from './models/Places.js';
+import FavouriteEventsModel from './models/FavouriteEvents.js';
+import TicketsModel from './models/Tickets.js';
+import PlaceSeatsModel from './models/PlaceSeats.js';
+import TicketStatusesModel from './models/TicketStatuses.js';
+import cors from 'cors';
 
+const app = express();
 //without this every post request will give an error
 app.use(express.json());
 app.use(cors());
 
+
+//env for database connection
 mongoose.connect("mongodb+srv://ptsproject68:flhfYzemHSCECoyx@events.1d43mbr.mongodb.net/?retryWrites=true&w=majority&appName=events");
 
-//request - information from frontend to backend, response - information from backend to frontend
-app.get("/getRoles", async(req, res) => {
-    try {
-        const roles = await RoleModel.find({});
-        console.log(roles);
-        res.json(roles);
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ error: err.message });
-      }
+app.use((err, req,res,next) => {
+  const statusCode = err.statusCode || 500;
+  // noinspection JSUnresolvedReference
+  const message = err.message || 'Internal Server Error';
+  const success = "false";
+  // noinspection JSUnresolvedReference
+  return res.status(statusCode).json({
+      success: false,
+      statusCode,
+      message,
+  });
 });
 
-app.post("/createRole", async(req, res) => {
-    try {
-        const role = req.body;
-        const newRole = new RoleModel(role);
-        await newRole.save();
-        res.json(role); //send to frontend the created role
-        console.log(role);
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ error: err.message });
-      }
-});
+app.use("/roles", roleRoutes);
 
 app.get("/getUsers", async(req, res) => {
     try {
@@ -76,6 +68,34 @@ app.get("/getEvents", async(req, res) => {
       console.log(err);
       res.status(500).json({ error: err.message });
     }
+});
+
+app.get("/getEventById/:eventId", async(req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    const event = await EventModel.findById(eventId);
+    console.log(event);
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    res.json(event);
+  } catch (err) {
+    console.log(err);
+      res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/getActiveEvents', async (req, res) => {
+  try {
+      const events = await EventModel.find({
+          approvedByAdminId: { $ne: null },
+          isArchived: false
+      }).exec();
+      res.json(events);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: err.message });
+  }
 });
 
 app.post("/createEvent", async(req, res) => {
