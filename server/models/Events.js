@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const EventsScheme = new mongoose.Schema({
     approvedByAdminId: {
@@ -52,4 +52,4 @@ const EventsScheme = new mongoose.Schema({
 
 const EventModel = mongoose.model("events", EventsScheme);
 
-module.exports = EventModel;
+export default EventModel;

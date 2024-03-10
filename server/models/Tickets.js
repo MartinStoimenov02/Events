@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const TicketsScheme = new mongoose.Schema({
     eventId: {
@@ -30,4 +30,4 @@ const TicketsScheme = new mongoose.Schema({
 
 const TicketsModel = mongoose.model("tickets", TicketsScheme);
 
-module.exports = TicketsModel;
+export default TicketsModel;

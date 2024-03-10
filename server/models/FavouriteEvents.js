@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const FavouriteEventsScheme = new mongoose.Schema({
     eventId: {
@@ -15,4 +15,4 @@ const FavouriteEventsScheme = new mongoose.Schema({
 
 const FavouriteEventsModel = mongoose.model("favouriteEvents", FavouriteEventsScheme);
 
-module.exports = FavouriteEventsModel;
+export default FavouriteEventsModel;
