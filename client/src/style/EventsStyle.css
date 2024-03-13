@@ -1,0 +1,40 @@
+body.event {
+    background-color: rgb(255, 217, 204);
+}
+
+h1.events{
+    font-size: 40px;
+}
+
+table.events {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    color: #000000;
+
+  }
+
+  th.events,
+  td.events {
+    text-align: center;
+    padding: 5px;
+  }
+
+  /* unvisited link */
+a:link.events {
+    color: rgb(0, 0, 0);
+  }
+  
+  /* visited link */
+  a:visited.events {
+    color: green;
+  }
+  
+  /* mouse over link */
+  a:hover.events {
+    color: rgb(46, 144, 255);
+  }
+  
+  /* selected link */
+  a:active.events {
+    color: rgb(0, 158, 61);
+  }

@@ -13,7 +13,7 @@ const SpecifiedEvent = props=> {
 
   useEffect(() => {
     // pass the endpoint url
-    Axios.get(`http://localhost:3001/getEventById/${eventId}`).then((response) => {
+    Axios.get(`http://localhost:3001/events/getEventById/${eventId}`).then((response) => {
       setCurrentEvent(response.data);
     });
   }, []);
