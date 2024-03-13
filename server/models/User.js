@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const UsersScheme = new mongoose.Schema({
+const UserScheme = new mongoose.Schema({
     roleId: {
         type: mongoose.Types.ObjectId,
         ref: "Roles",
@@ -27,6 +27,6 @@ const UsersScheme = new mongoose.Schema({
     },
 }, {timestamps:true});
 
-const UserModel = mongoose.model("users", UsersScheme);
+const UserModel = mongoose.model("users", UserScheme);
 
 export default UserModel;

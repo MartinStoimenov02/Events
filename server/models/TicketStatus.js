@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const TicketStatusesScheme = new mongoose.Schema({
+const TicketStatusScheme = new mongoose.Schema({
     statusName: {
         type: String,
         required:[true, "statusName is required"],
@@ -8,6 +8,6 @@ const TicketStatusesScheme = new mongoose.Schema({
     },
 }, {timestamps:true});
 
-const TicketStatusesModel = mongoose.model("ticketStatuses", TicketStatusesScheme);
+const TicketStatusesModel = mongoose.model("ticketStatuses", TicketStatusScheme);
 
 export default TicketStatusesModel;

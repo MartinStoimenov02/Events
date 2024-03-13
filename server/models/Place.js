@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const PlacesScheme = new mongoose.Schema({
+const PlaceScheme = new mongoose.Schema({
     address: {
         type: String,
         required:[true, "address is required."],
@@ -11,6 +11,6 @@ const PlacesScheme = new mongoose.Schema({
     },
 }, {timestamps:true});
 
-const PlacesModel = mongoose.model("places", PlacesScheme);
+const PlacesModel = mongoose.model("places", PlaceScheme);
 
 export default PlacesModel;

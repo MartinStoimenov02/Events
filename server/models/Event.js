@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const EventsScheme = new mongoose.Schema({
+const EventScheme = new mongoose.Schema({
     approvedByAdminId: {
         type: mongoose.Types.ObjectId,
         ref: "users",
@@ -50,6 +50,6 @@ const EventsScheme = new mongoose.Schema({
     }
 }, {timestamps:true});
 
-const EventModel = mongoose.model("events", EventsScheme);
+const EventModel = mongoose.model("events", EventScheme);
 
 export default EventModel;
