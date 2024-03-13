@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const PlaceSeatsScheme = new mongoose.Schema({
+const PlaceSeatScheme = new mongoose.Schema({
     eventId: {
         type: mongoose.Types.ObjectId,
         ref: "Events",
@@ -30,6 +30,6 @@ const PlaceSeatsScheme = new mongoose.Schema({
     },
 }, {timestamps:true});
 
-const PlaceSeatsModel = mongoose.model("placeSeats", PlaceSeatsScheme);
+const PlaceSeatsModel = mongoose.model("placeSeats", PlaceSeatScheme);
 
 export default PlaceSeatsModel;

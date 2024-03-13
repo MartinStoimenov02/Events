@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const FavouriteEventsScheme = new mongoose.Schema({
+const FavouriteEventScheme = new mongoose.Schema({
     eventId: {
         type: mongoose.Types.ObjectId,
         ref: "Events ",
@@ -13,6 +13,6 @@ const FavouriteEventsScheme = new mongoose.Schema({
     },
 }, {timestamps:true});
 
-const FavouriteEventsModel = mongoose.model("favouriteEvents", FavouriteEventsScheme);
+const FavouriteEventsModel = mongoose.model("favouriteEvents", FavouriteEventScheme);
 
 export default FavouriteEventsModel;

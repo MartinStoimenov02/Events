@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const TicketsScheme = new mongoose.Schema({
+const TicketScheme = new mongoose.Schema({
     eventId: {
         type: mongoose.Types.ObjectId,
         ref: "Events ",
@@ -28,6 +28,6 @@ const TicketsScheme = new mongoose.Schema({
     },
 }, {timestamps:true});
 
-const TicketsModel = mongoose.model("tickets", TicketsScheme);
+const TicketsModel = mongoose.model("tickets", TicketScheme);
 
 export default TicketsModel;

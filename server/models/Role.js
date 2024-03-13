@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const RolesScheme = new mongoose.Schema({
+const RoleScheme = new mongoose.Schema({
     roleName: {
         type: String,
         required:[true, "roleName is required"],
@@ -8,6 +8,6 @@ const RolesScheme = new mongoose.Schema({
     },
 }, {timestamps:true});
 
-const RoleModel = mongoose.model("roles", RolesScheme);
+const RoleModel = mongoose.model("roles", RoleScheme);
 
 export default RoleModel;
