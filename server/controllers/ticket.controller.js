@@ -15,7 +15,7 @@ export const createTicket = async(req, res, next) => {
     try {
         const ticket = req.body;
         const newTicket = new TicketsModel(ticket);
-        newTicket.ticketNumber = ticket.eventId+new Date().toISOString()+ticket.userId+ticket.seatId
+        newTicket.ticketNumber = ticket.eventId+new Date().toISOString()+ticket.seatId
         await newTicket.save();
         res.json(ticket); 
         console.log(ticket);

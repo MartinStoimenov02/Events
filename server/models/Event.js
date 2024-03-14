@@ -9,7 +9,7 @@ const EventScheme = new mongoose.Schema({
     isArchived: {
         type: Boolean,
         required:[true, "isArchived is required."],
-        default: true
+        default: false
     },
     imagePath: {
         type: String,
