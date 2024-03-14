@@ -20,10 +20,6 @@ const EventScheme = new mongoose.Schema({
         ref: "Users",
         required:[true, "ownerId is required."]
     },
-    countOfTickets: {
-        type: Number,
-        required:[true, "countOfTickets is required."]
-    },
     placeId: {
         type: mongoose.Types.ObjectId,
         ref: "Places",

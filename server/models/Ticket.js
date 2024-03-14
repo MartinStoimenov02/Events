@@ -11,6 +11,10 @@ const TicketScheme = new mongoose.Schema({
         ref: "Users ",
         required:[true, "userId is required."]
     },
+    seatPrice: {
+        type: mongoose.Types.Decimal128,
+        required:[true, "price is required."]
+    },
     ticketNumber: {
         type: String,
         required:[true, "ticketNumber is required."],
