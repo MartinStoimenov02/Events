@@ -9,7 +9,7 @@ const TicketScheme = new mongoose.Schema({
     userId: {
         type: mongoose.Types.ObjectId,
         ref: "Users ",
-        required:[true, "userId is required."]
+        default: null
     },
     seatPrice: {
         type: mongoose.Types.Decimal128,
