@@ -9,6 +9,10 @@ const PlaceScheme = new mongoose.Schema({
         type: String,
         required:[true, "imagePath is required."],
     },
+    title: {
+        type: String,
+        required:[true, "title is required."],
+    },
 }, {timestamps:true});
 
 const PlacesModel = mongoose.model("places", PlaceScheme);
