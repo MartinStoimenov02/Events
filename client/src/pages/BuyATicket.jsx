@@ -1,4 +1,4 @@
-// ActiveEventsList.js
+// BuyATicket.js
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import ReactModal from "react-modal";
@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "../style/EventsStyle.css";
 import "../style/EventStyle.css";
 
-function ActiveEventsList() {
+function BuyATicket() {
   const [listOfActiveEvents, setListOfActiveEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null); // Track selected event
   const [modalIsOpen, setModalIsOpen] = useState(false); // Modal state
@@ -89,12 +89,6 @@ function ActiveEventsList() {
         onRequestClose={() => setModalIsOpen(false)}
         contentLabel="Event Details Modal"
       >
-
-        {/* Close button */}
-  <button className="close-button" onClick={() => setModalIsOpen(false)}>
-    &times;
-  </button>
-  
         {selectedEvent && (
           <div className="event-container">
             <div className="event-details">
@@ -128,4 +122,4 @@ function ActiveEventsList() {
   );
 }
 
-export default ActiveEventsList;
+export default BuyATicket;
