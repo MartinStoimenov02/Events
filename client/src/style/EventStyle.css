@@ -54,6 +54,23 @@
   background-color: #0056b3;
 }
 
+.btnPay {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #ff002f;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  width: 90%;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.btnPay:hover {
+  background-color: #780016;
+}
+
 /* Close button */
 .close-button {
   position: absolute;

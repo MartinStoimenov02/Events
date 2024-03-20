@@ -1,124 +1,163 @@
-// BuyATicket.js
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Axios from "axios";
-import ReactModal from "react-modal";
-import { Link } from "react-router-dom";
-import "../style/EventsStyle.css";
 import "../style/EventStyle.css";
 
 function BuyATicket() {
-  const [listOfActiveEvents, setListOfActiveEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null); // Track selected event
-  const [modalIsOpen, setModalIsOpen] = useState(false); // Modal state
+  const { eventId } = useParams();
+  const [eventDetails, setEventDetails] = useState(null);
+  const [linkedPlaceSeats, setLinkedPlaceSeats] = useState([]);
+  const [placeDetails, setPlaceDetails] = useState(null);
+  const [availableTickets, setAvailableTickets] = useState(null);
+  const [selectedRow, setSelectedRow] = useState("");
+  const [selectedCol, setSelectedCol] = useState("");
+  const [selectedTickets, setSelectedTickets] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [ticketPrice, setTicketPrice] = useState(0);
+  const [availableColumns, setAvailableColumns] = useState([]);
 
   useEffect(() => {
-    const fetchActiveEvents = async () => {
+    const fetchEventDetails = async () => {
       try {
-        const response = await Axios.get(
-          "http://localhost:3001/events/getActiveEvents"
+        // Fetch event details
+        const eventResponse = await Axios.get(
+          `http://localhost:3001/events/getEventById/${eventId}`
         );
-        const events = response.data;
+        setEventDetails(eventResponse.data);
 
-        // Fetch details of each place
-        const eventsWithPlaceDetails = await Promise.all(
-          events.map(async (event) => {
-            const placeResponse = await Axios.get(
-              `http://localhost:3001/places/getPlaceById/${event.placeId}`
-            );
-            const place = placeResponse.data;
-            return { ...event, place };
-          })
+        // Fetch place details based on the place ID from event details
+        const placeResponse = await Axios.get(
+          `http://localhost:3001/places/getPlaceById/${eventResponse.data.placeId}`
         );
+        setPlaceDetails(placeResponse.data);
 
-        setListOfActiveEvents(eventsWithPlaceDetails);
+        // Fetch available tickets for the event
+        const ticketResponse = await Axios.get(
+          `http://localhost:3001/tickets/getActiveTicketsByEventId/${eventId}/${eventResponse.data.placeId}`
+        );
+        setAvailableTickets(ticketResponse.data);
+
+        const placeSeatIds = await ticketResponse.data.map(ticket => ticket.seatId);
+        const linkedPlaceSeatsResponse = await Axios.post(`http://localhost:3001/placeSeats/getPlaceSeatsByIds`, { placeSeatIds: placeSeatIds });
+        setLinkedPlaceSeats(linkedPlaceSeatsResponse.data);
       } catch (error) {
-        console.error("Error fetching active events:", error);
+        console.error("Error fetching event details:", error);
       }
     };
 
-    fetchActiveEvents();
-  }, []);
+    fetchEventDetails();
+  }, [eventId]);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getUTCFullYear();
-    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-    const day = String(date.getUTCDate()).padStart(2, "0");
-    const hours = String(date.getUTCHours()).padStart(2, "0");
-    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  // Update column combobox when a row is selected
+  useEffect(() => {
+    if (selectedRow) {
+      console.log("selectedRow:", typeof(parseInt(selectedRow)));
+      // Filter available columns based on the selected row
+      const columns = linkedPlaceSeats
+        .filter(seat => seat.row === parseInt(selectedRow))
+        .map(seat => seat.col);
+      // Set available columns
+      console.log("columns:", columns);
+      setAvailableColumns(columns);
+    } else{
+      setTicketPrice(0);
+    }
+  }, [selectedRow, linkedPlaceSeats]);
 
-    return `${day}.${month}.${year} г.` + "\n" + `${hours}:${minutes}`;
+  // Calculate ticket price when both row and column are selected
+  useEffect(() => {
+    if (selectedRow && selectedCol) {
+      console.log("selectedRow: ", selectedRow);
+      console.log("selectedCol: ", selectedCol);
+      // Find the seat with the selected row and column
+      const selectedSeat = linkedPlaceSeats.find(
+        seat => seat.row === parseInt(selectedRow) && seat.col === parseInt(selectedCol)
+      );
+      console.log("selectedSeat: ", selectedSeat);
+
+      // If seat is found, find the linked ticket
+      if (selectedSeat) {
+        const linkedTicket = availableTickets.find(ticket => ticket.seatId === selectedSeat._id);
+
+        // Update ticket price
+        if (linkedTicket) {
+          console.log("linkedTicket: ", linkedTicket);
+          console.log("linkedTicket: ", linkedTicket.seatPrice.$numberDecimal);
+          setTicketPrice(parseFloat(linkedTicket.seatPrice.$numberDecimal));
+        } else {
+          setTicketPrice(0);
+        }
+      }
+    }else{
+      setTicketPrice(0);
+    }
+  }, [selectedRow, selectedCol, linkedPlaceSeats, availableTickets]);
+
+  console.log("ticketPrice: ", ticketPrice);
+  // Handle adding selected ticket to the list of selectedTickets
+  const handleAddToSelectedTickets = () => {
+    if (selectedRow && selectedCol && ticketPrice > 0) {
+      // Add the selected ticket to the list of selectedTickets
+      setSelectedTickets([...selectedTickets, { row: selectedRow, col: selectedCol, price: ticketPrice }]);
+      // Update total price
+      setTotalPrice(totalPrice + ticketPrice);
+    }
   };
 
-  const handleEventClick = (event) => {
-    setSelectedEvent(event);
-    setModalIsOpen(true); // Open the modal
+  // Handle removing a ticket from selectedTickets
+  const handleRemoveTicket = (index) => {
+    const ticketToRemove = selectedTickets[index];
+    // Remove the ticket from selectedTickets
+    setSelectedTickets(selectedTickets.filter((ticket, i) => i !== index));
+    // Subtract the ticket price from total price
+    setTotalPrice(totalPrice - ticketToRemove.price);
   };
 
   return (
-    <body className="event">
-      <div className="eventsDisplay">
-        {listOfActiveEvents.map((event) => (
-          <div key={event._id} onClick={() => handleEventClick(event)}> {/* Pass event object to handleEventClick */}
-            <div className="ticket">
-              <div className="ticket-image">
-                <img src={event.imagePath} alt={event.title} />
-              </div>
-              <div className="ticket-details">
-                <div className="ticket-date">
-                  {formatDate(event.dateAndTime)}
-                </div>
-                <div className="ticket-content">
-                  <h1 className="ticket-title">{event.title}</h1>
-                  <div className="place-details">
-                    <h3 className="ticket-place-title">
-                      {event.place.title}
-                    </h3>
-                    <p className="ticket-address">{event.place.address}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Modal */}
-      <ReactModal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        contentLabel="Event Details Modal"
-      >
-        {selectedEvent && (
-          <div className="event-container">
-            <div className="event-details">
-              <h1 className="event-title">{selectedEvent.title}</h1>
-              <div className="event-info">
-                <p>
-                  <b>{formatDate(selectedEvent.dateAndTime)}</b>
-                </p>
-                <p>
-                  <b>{selectedEvent.place.title}</b>
-                </p>
-                <p>{selectedEvent.place.address}</p>
-              </div>
-              <p className="event-description">
-                <i>{selectedEvent.description}</i>
-              </p>
-              <Link
-              to={`/buyTicket/${selectedEvent._id}`}
-              className="btn btn-primary"
-            >
-              Купи Билети
-            </Link>
-            </div>
-            <div className="event-image">
-              <img src={selectedEvent.imagePath} alt={selectedEvent.title} />
-            </div>
-          </div>
-        )}
-      </ReactModal>
-    </body>
+    <div className="container">
+      <table width="100%" border="1">
+      <tr>
+      <td width="60%">
+        {/* Display the image of the place */}
+        {placeDetails && <img src={placeDetails.imagePath} alt="Place" />}
+      </td>
+      <td style={{textAlign: "center"}}>
+        <select onChange={(e) => setSelectedRow(e.target.value)}>
+          <option value="">Select Row</option>
+          {linkedPlaceSeats &&
+            [...new Set(linkedPlaceSeats.map((seat) => seat.row))].map((row) => (
+              <option key={row} value={row}>
+                {row}
+              </option>
+            ))}
+        </select>
+        <select onChange={(e) => setSelectedCol(e.target.value)}>
+          <option value="">Select Column</option>
+          {availableColumns &&
+            availableColumns.map((col) => (
+              <option key={col} value={col}>
+                {col}
+              </option>
+            ))}
+        </select>
+        <p>Ticket Price: {ticketPrice}</p>
+        <button className="btn btn-primary" onClick={handleAddToSelectedTickets}>Add</button>
+        <ul>
+          {selectedTickets.map((ticket, index) => (
+            <li key={index} >
+              Row: {ticket.row}, Col: {ticket.col}, Price: {ticket.price}
+              <button onClick={() => handleRemoveTicket(index)}>X</button>
+            </li>
+          ))}
+        </ul>
+        <p>Total Price: {totalPrice}</p>
+        <button className="btnPay btn-primary" onClick={() => console.log("Redirect to PayATicket page")}>
+          Pay
+        </button>
+      </td>
+      </tr>
+      </table>
+    </div>
   );
 }
 

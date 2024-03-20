@@ -18,7 +18,7 @@ app.use(cors());
 
 
 //env for database connection
-await mongoose.connect("mongodb+srv://testuser:dFbtQA8DDQX8tBDV@events.grtk5vb.mongodb.net/?retryWrites=true&w=majority&appName=events");
+await mongoose.connect("mongodb+srv://Martin:KXxbXTJz3c3Y4Vs6@events.grtk5vb.mongodb.net/?retryWrites=true&w=majority&appName=events");
 
 app.use((err, req,res,next) => {
   const statusCode = err.statusCode || 500;
