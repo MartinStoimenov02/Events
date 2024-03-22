@@ -1,9 +1,10 @@
 import express from 'express';
-import { createTicket, getTickets } from "../controllers/ticket.controller.js"
+import { createTicket, getTickets, getActiveTicketsByEventId } from "../controllers/ticket.controller.js"
 
 const router = express.Router();
 
 router.get("/getTickets", getTickets);
 router.post("/createTicket", createTicket);
+router.get("/getActiveTicketsByEventId/:eventId/:placeId", getActiveTicketsByEventId);
 
 export default router;
