@@ -14,6 +14,10 @@ const PlaceSeatScheme = new mongoose.Schema({
         type: Number,
         required:[true, "col is required."]
     },
+    sector: {
+        type: String,
+        default: 0
+    },
 }, {timestamps:true});
 
 const PlaceSeatsModel = mongoose.model("placeSeats", PlaceSeatScheme);
