@@ -1,0 +1,72 @@
+.pay-tickets-container {
+    margin: 20px;
+  }
+  
+  .tabs-summary-container {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .tabs-container {
+    width: 50%;
+  }
+  
+  .tab-content {
+    padding: 20px;
+  }
+  
+  .summary-container {
+    width: 50%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-left: 20px;
+  }
+  
+  .summary-container h3 {
+    margin-top: 0;
+  }
+  
+  .summary-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .summary-container li {
+    margin-bottom: 10px;
+  }
+  
+  .buy-tickets-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+  
+  .buy-tickets-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  /* Adjust size of textboxes */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+  }
+  

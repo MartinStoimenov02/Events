@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
-import "../style/EventStyle.css";
+import { Link } from "react-router-dom";
+import "../style/ChooseTicketsStyle.css";
 
 function BuyATicket() {
   const { eventId } = useParams();
@@ -19,6 +20,7 @@ function BuyATicket() {
   const [availableRows, setAvailableRows] = useState([]);
   const [availableColumns, setAvailableColumns] = useState([]);
   const [imageScale, setImageScale] = useState(1);
+  const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const fetchEventDetails = async () => {
@@ -93,10 +95,40 @@ function BuyATicket() {
 
   const handleAddToSelectedTickets = () => {
     if (selectedSector && selectedRow && selectedCol && ticketPrice > 0) {
-      setSelectedTickets([...selectedTickets, { sector: selectedSector, row: selectedRow, col: selectedCol, price: ticketPrice }]);
-      setTotalPrice(totalPrice + ticketPrice);
+      const selectedSeat = linkedPlaceSeats.find(
+        seat => seat.sector === selectedSector && seat.row === parseInt(selectedRow) && seat.col === parseInt(selectedCol)
+      );
+  
+      if (selectedSeat) {
+        const linkedTicket = availableTickets.find(ticket => ticket.seatId === selectedSeat._id);
+        console.log("linkedTicket: "+linkedTicket._id);
+  
+        if (linkedTicket) {
+          const ticketToAdd = {
+            _id: linkedTicket._id, // Include the _id
+            sector: selectedSector,
+            row: selectedRow,
+            col: selectedCol,
+            price: ticketPrice
+          };
+          setSelectedTickets([...selectedTickets, ticketToAdd]);
+          setTotalPrice(totalPrice + ticketPrice);
+          //availableColumns
+        }
+      }
     }
   };
+  
+
+  useEffect(() => {
+    if (placeDetails && placeDetails.imagePath) {
+      const image = new Image();
+      image.src = placeDetails.imagePath;
+      image.onload = () => {
+        setImageScale(1); // Reset image scale on image change
+      };
+    }
+  }, [placeDetails]);
 
   const handleRemoveTicket = (index) => {
     const ticketToRemove = selectedTickets[index];
@@ -105,32 +137,39 @@ function BuyATicket() {
   };
 
   const handleZoomIn = () => {
-    setImageScale(imageScale + 0.1);
+    setImageScale(imageScale => imageScale * 1.1);
   };
-
+  
   const handleZoomOut = () => {
-    if (imageScale > 0.2) { // Limiting zoom out to prevent negative or too small scale
-      setImageScale(imageScale - 0.1);
-    }
+    setImageScale(imageScale => Math.max(0.1, imageScale * 0.9));
   };
 
   return (
-    <div className="container">
+    <div className="container-ticket">
       <table width="100%" border="1">
         <tbody>
           <tr>
             <td width="60%">
-              {placeDetails && (
-                <img
-                  src={placeDetails.imagePath}
-                  alt="Place"
-                  style={{ transform: `scale(${imageScale})` }}
-                />
-              )}
+              <div className="image-container-ticket">
+                {placeDetails && placeDetails.imagePath && (
+                    <img
+                      src={placeDetails.imagePath}
+                      alt="Place"
+                      className="event-ticket-image"
+                      style={{
+                        transform: `translate(${imagePosition.x}px, ${imagePosition.y}px) scale(${imageScale})`,
+                      }}
+                    />
+                )}
+                <div className="zoom-buttons-ticket">
+                  <button onClick={handleZoomIn}>+</button>
+                  <button onClick={handleZoomOut}>-</button>
+                </div>
+              </div>
             </td>
-            <td style={{textAlign: "center"}}>
+            <td className="price-paragraph-ticket" style={{textAlign: "center"}}>
               <select onChange={(e) => setSelectedSector(e.target.value)}>
-                <option value="">Select Sector</option>
+                <option value="">Сектор</option>
                 {availableSectors &&
                   availableSectors.map((sector) => (
                     <option key={sector} value={sector}>
@@ -139,7 +178,7 @@ function BuyATicket() {
                   ))}
               </select>
               <select onChange={(e) => setSelectedRow(e.target.value)}>
-                <option value="">Select Row</option>
+                <option value="">Ред</option>
                 {availableRows &&
                   availableRows.map((row) => (
                     <option key={row} value={row}>
@@ -148,7 +187,7 @@ function BuyATicket() {
                   ))}
               </select>
               <select onChange={(e) => setSelectedCol(e.target.value)}>
-                <option value="">Select Column</option>
+                <option value="">Място</option>
                 {availableColumns &&
                   availableColumns.map((col) => (
                     <option key={col} value={col}>
@@ -156,9 +195,9 @@ function BuyATicket() {
                     </option>
                   ))}
               </select>
-              <p>Цена на билета: {ticketPrice} лв.</p>
-              <button className="btn btn-primary" onClick={handleAddToSelectedTickets}>Добави билета</button>
-              <ul>
+              <p><i>Цена на билета:</i><b>{ticketPrice} лв.</b> </p>
+              <button className="btn-ticket btn-primary" onClick={handleAddToSelectedTickets}>Добави билета</button>
+              <ul className="added-tickets-list-ticket">
                 {selectedTickets.map((ticket, index) => (
                   <li key={index} >
                     Сектор: {ticket.sector}, Ред: {ticket.row}, Място: {ticket.col}, Цена: {ticket.price}
@@ -166,20 +205,17 @@ function BuyATicket() {
                   </li>
                 ))}
               </ul>
-              <p>Общо: {totalPrice} лв.</p>
-              <button className="btnPay btn-primary" onClick={() => console.log("Redirect to PayATicket page")}>
+              <p><i>Общо: </i><b>{totalPrice} лв.</b></p>
+              <Link className="btnPay-ticket btn-primary" to={`/payTickets/${totalPrice}/${JSON.stringify(selectedTickets)}`}>
                 Плащане
-              </button>
-              <div>
-                <button onClick={handleZoomIn}>Zoom In</button>
-                <button onClick={handleZoomOut}>Zoom Out</button>
-              </div>
+              </Link>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    );
+  );
 }
 
 export default BuyATicket;
+

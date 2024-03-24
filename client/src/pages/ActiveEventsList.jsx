@@ -111,6 +111,9 @@ function ActiveEventsList() {
               <p className="event-description">
                 <i>{selectedEvent.description}</i>
               </p>
+              <p className="event-description">
+                Участници: <i>{selectedEvent.participants}</i>
+              </p>
               <Link
               to={`/buyTicket/${selectedEvent._id}`}
               className="btn btn-primary"

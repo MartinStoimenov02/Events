@@ -1,0 +1,178 @@
+/* EventStyle.css */
+
+.event-ticket-container {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+  }
+  
+  .event-ticket-image {
+    flex: 1;
+    max-width: 620px; /* Adjust this value as needed */
+    padding: 0 10px; /* Add padding for spacing */
+  }
+  
+  .event-ticket-image img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px;
+  }
+  
+  .event-ticket-details {
+    flex: 1;
+    padding: 20px;
+    max-width: 600px;
+  }
+  
+  .event-ticket-title {
+    font-size: 32px;
+    margin-top: 0;
+  }
+  
+  .event-ticket-info {
+    margin-bottom: 20px;
+  }
+  
+  .event-ticket-description {
+    font-style: italic;
+  }
+  
+  .btn-ticket {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    width: 90%;
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-ticket:hover {
+    background-color: #0056b3;
+  }
+  
+  .btnPay-ticket {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #ff002f;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    width: 83%;
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+  
+  .btnPay-ticket:hover {
+    background-color: #780016;
+  }
+  
+  /* Close button */
+  .close-button-ticket {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px;
+    font-size: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    outline: none;
+  }
+  
+  .close-button-ticket:hover {
+    color: #555;
+  }
+  
+  .image-container-ticket {
+    display: flex; /* Use flexbox to center */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    position: relative;
+    width: 100%; /* Fixed width */
+    height: 400px; /* Fixed height */
+    overflow: auto; /* Enable scrolling */
+  }
+  
+  .event-ticket-image {
+    max-width: none; /* Позволява на изображението да надхвърли своя оригинален размер */
+    max-height: none; /* Позволява на изображението да надхвърли своя оригинален размер */
+    border-radius: 10px;
+    position: absolute; /* Позициониране на изображението абсолютно в рамките на своя контейнер */
+    top: 0%; /* Позициониране на изображението в средата на контейнера по вертикалата */
+    left: 0%; /* Позициониране на изображението в средата на контейнера по хоризонталата */
+    transform: translate(-50%, -50%); /* Центриране на изображението в средата на контейнера */
+    transform-origin: top left; /* Задаване на началната точка на трансформация към горния ляв ъгъл */
+  }
+  
+  select {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Styling for zoom buttons */
+  .zoom-buttons-ticket {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .zoom-buttons-ticket button {
+    padding: 10px;
+    margin-left: 5px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .zoom-buttons-ticket button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Styling for paragraphs with prices */
+  .price-paragraph-ticket {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  
+  /* Styling for list of added tickets */
+  .added-tickets-list-ticket {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .added-tickets-list-ticket li {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+  }
+  
+  .added-tickets-list-ticket li button {
+    margin-left: 10px;
+    background-color: #ff002f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .added-tickets-list-ticket li button:hover {
+    background-color: #780016;
+  }
+  
