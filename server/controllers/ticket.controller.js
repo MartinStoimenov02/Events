@@ -68,27 +68,29 @@ export const createTicket = async(req, res, next) => {
       }
   }
 
-  export const updateTickets = async(req, res, next) =>{
+  export const updateTickets = async (req, res, next) => {
     try {
-      const { updatedTickets } = req.body;
-      console.log("updatedTickets: "+JSON.stringify(updatedTickets));
-      const ticketIds = updatedTickets.map(ticket => ticket._id);
-      console.log("ticketIds: "+JSON.stringify(ticketIds));
-      //const userId = await UserModel.findone({});
-      //const statusName = "Ordered";
-      //const statusId = await TicketStatusesModel.find({statusName: statusName}).limit(1)._id;
+        const { updatedTickets } = req.body;
+        console.log("updatedTickets: " + JSON.stringify(updatedTickets));
+        const ticketIds = updatedTickets.map(ticket => ticket._id);
+        console.log("ticketIds: " + JSON.stringify(ticketIds));
 
-      const userId = "65ff1c3b47563e0790cbe1d4";
-      const statusId = "65ff1b3047563e0790cbe1bb";
+        const userId = "65ff1c3b47563e0790cbe1d4";
+        const statusId = "65ff1b3047563e0790cbe1bb";
 
-      console.log("userId: "+userId);
-      console.log("statusId:"+statusId);
+        console.log("userId: " + userId);
+        console.log("statusId:" + statusId);
 
-      const ticket = await TicketsModel.findByIdAndUpdate(ticketIds, { userId: userId, ticketStatusId: statusId }, { new: false });
-      res.json(ticket); // Return the updated ticket
-      console.log(ticket);
+        const updatedDocs = [];
+        for (const ticketId of ticketIds) {
+            const updatedTicket = await TicketsModel.findByIdAndUpdate(ticketId, { userId: userId, ticketStatusId: statusId }, { new: false });
+            updatedDocs.push(updatedTicket);
+        }
+
+        res.json(updatedDocs); // Return the updated tickets
+        console.log(updatedDocs);
     } catch (error) {
-      next(err);
-      console.log(err);
+        next(error); // 'error' should be used instead of 'err'
+        console.log(error);
     }
-  }
+}
