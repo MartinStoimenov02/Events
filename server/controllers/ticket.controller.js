@@ -1,5 +1,7 @@
 import TicketsModel from "../models/Ticket.js"; 
 import PlaceSeatsModel from "../models/PlaceSeat.js";
+import TicketStatusesModel from "../models/TicketStatus.js";
+import UserModel from "../models/User.js";
 
 export const getTickets = async(req, res, next) => {
     try {
@@ -64,4 +66,29 @@ export const createTicket = async(req, res, next) => {
         next(err);
         console.log(err);
       }
+  }
+
+  export const updateTickets = async(req, res, next) =>{
+    try {
+      const { updatedTickets } = req.body;
+      console.log("updatedTickets: "+JSON.stringify(updatedTickets));
+      const ticketIds = updatedTickets.map(ticket => ticket._id);
+      console.log("ticketIds: "+JSON.stringify(ticketIds));
+      //const userId = await UserModel.findone({});
+      //const statusName = "Ordered";
+      //const statusId = await TicketStatusesModel.find({statusName: statusName}).limit(1)._id;
+
+      const userId = "65ff1c3b47563e0790cbe1d4";
+      const statusId = "65ff1b3047563e0790cbe1bb";
+
+      console.log("userId: "+userId);
+      console.log("statusId:"+statusId);
+
+      const ticket = await TicketsModel.findByIdAndUpdate(ticketIds, { userId: userId, ticketStatusId: statusId }, { new: false });
+      res.json(ticket); // Return the updated ticket
+      console.log(ticket);
+    } catch (error) {
+      next(err);
+      console.log(err);
+    }
   }

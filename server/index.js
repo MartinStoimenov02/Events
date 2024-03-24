@@ -7,6 +7,7 @@ import placeSeatRoutes from './routes/placeseat.route.js';
 import favouriteEventsRoutes from './routes/favouriteevents.route.js';
 import ticketRoutes from './routes/ticket.route.js';
 import ticketStatusRoutes from './routes/ticketstatus.route.js';
+import emailRoutes from './routes/email.route.js';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -44,6 +45,7 @@ app.use("/placeseats", placeSeatRoutes);
 app.use('/favouriteevents', favouriteEventsRoutes);
 app.use("/tickets", ticketRoutes);
 app.use("/ticketstatuses", ticketStatusRoutes);
+app.use("/email", emailRoutes);
 
 app.listen(3001, () => {
     console.log("server runs perfectly!");
