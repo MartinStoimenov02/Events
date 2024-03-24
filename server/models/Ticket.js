@@ -9,12 +9,11 @@ const TicketScheme = new mongoose.Schema({
     userId: {
         type: mongoose.Types.ObjectId,
         ref: "Users ",
-        required:[true, "userId is required."]
+        default: null
     },
-    ticketNumber: {
-        type: String,
-        required:[true, "ticketNumber is required."],
-        unique: [true, "ticketNumber must be unique"]
+    seatPrice: {
+        type: mongoose.Types.Decimal128,
+        required:[true, "price is required."]
     },
     seatId: {
         type: mongoose.Types.ObjectId,

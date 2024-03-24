@@ -23,3 +23,18 @@ export const createPlaceSeat = async(req, res, next) => {
         console.log(err);
       }
   }
+
+  // Get active place seats by event and place
+export const getPlaceSeatsByIds = async (req, res, next) => {
+  try {
+    const { placeSeatIds } = req.body;
+    console.log(placeSeatIds);
+    // Fetch place seats using the provided place seat IDs
+    const linkedPlaceSeats = await PlaceSeatsModel.find({ _id: { $in: placeSeatIds } });
+    console.log(linkedPlaceSeats);
+    res.json(linkedPlaceSeats);
+  } catch (error) {
+    next(err);
+    console.log(err);
+  }
+}

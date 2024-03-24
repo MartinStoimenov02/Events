@@ -9,7 +9,7 @@ const EventScheme = new mongoose.Schema({
     isArchived: {
         type: Boolean,
         required:[true, "isArchived is required."],
-        default: true
+        default: false
     },
     imagePath: {
         type: String,
@@ -19,10 +19,6 @@ const EventScheme = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Users",
         required:[true, "ownerId is required."]
-    },
-    countOfTickets: {
-        type: Number,
-        required:[true, "countOfTickets is required."]
     },
     placeId: {
         type: mongoose.Types.ObjectId,
